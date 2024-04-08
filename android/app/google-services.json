@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "206821523502",
+    "project_id": "dsa-tracker-50a29",
+    "storage_bucket": "dsa-tracker-50a29.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206821523502:android:38274a961725e1f3eb5fbf",
+        "android_client_info": {
+          "package_name": "com.example.dsa_tracker_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRptCmtmU83wZqscBd_XQyHz7Dgd8QSLQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

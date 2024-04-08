@@ -1,0 +1,341 @@
+            // Text(
+            //   'Select Question Type:',
+            //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            // ),
+            // DropdownButton<String>(
+            //   value: _selectedQuestionType,
+            //   onChanged: (String? newValue) {
+            //     setState(() {
+            //       _selectedQuestionType = newValue!;
+            //     });
+            //   },
+            //   items: <String>['Multiple Choice', 'True/False', 'Fill in the Blank']
+            //       .map<DropdownMenuItem<String>>((String value) {
+            //     return DropdownMenuItem<String>(
+            //       value: value,
+            //       child: Text(value),
+            //     );
+            //   }).toList(),
+            // ),
+
+
+            
+// import 'package:flutter/material.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:dsa_tracker_app/screens/practice/practicetestoptions.dart';
+
+// class HomeScreen extends StatefulWidget {
+//   const HomeScreen({Key? key}) : super(key: key);
+
+//   @override
+//   _HomeScreenState createState() => _HomeScreenState();
+// }
+
+// class _HomeScreenState extends State<HomeScreen> {
+//   int _totalQuestions = 0;
+//   List<int> _milestones = []; 
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Colors.white,
+//       appBar: AppBar(
+//         centerTitle: true,
+//         elevation: 0,
+//         backgroundColor: Colors.white,
+//         title: Text(
+//           "Home",
+//           style: GoogleFonts.manrope(fontWeight: FontWeight.w500),
+//         ),
+//       ),
+//       body: Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: Column(
+//           children: [
+//             Padding(
+//               padding: const EdgeInsets.all(8.0),
+//               child: Row(
+//                 children: [
+//                   Expanded(
+//                     child: Container(
+//                       decoration: BoxDecoration(
+//                         color: Color.fromARGB(255, 237, 161, 161),
+//                         borderRadius: BorderRadius.circular(5),
+//                       ),
+//                       padding: EdgeInsets.all(16),
+//                       child: StreamBuilder<QuerySnapshot>(
+//                         stream: FirebaseFirestore.instance
+//                             .collection('questions')
+//                             .snapshots(),
+//                         builder: (context, snapshot) {
+//                           if (snapshot.connectionState ==
+//                               ConnectionState.waiting) {
+//                             return Text(
+//                               "Loading...",
+//                               textAlign: TextAlign.center,
+//                             );
+//                           } else if (snapshot.hasError) {
+//                             return Text(
+//                               "Error: ${snapshot.error}",
+//                               textAlign: TextAlign.center,
+//                             );
+//                           } else {
+//                             _totalQuestions = snapshot.data!.docs.length;
+//                             return Row(
+//                               children: [
+//                                 Text(
+//                                   "$_totalQuestions",
+//                                   textAlign: TextAlign.center,
+//                                   style: GoogleFonts.manrope(
+//                                     fontWeight: FontWeight.bold,
+//                                     fontSize: 70,
+//                                     color: Colors.white,
+//                                   ),
+//                                 ),
+//                                 SizedBox(
+//                                   height: 8,
+//                                   width: 4,
+//                                 ),
+//                                 Expanded(
+//                                   child: Column(
+//                                     crossAxisAlignment:
+//                                         CrossAxisAlignment.start,
+//                                     children: [
+//                                       Text(
+//                                         "Questions",
+//                                         textAlign: TextAlign.center,
+//                                         style: GoogleFonts.manrope(
+//                                           fontWeight: FontWeight.w600,
+//                                           fontSize: 20,
+//                                           color: Colors.white,
+//                                         ),
+//                                       ),
+//                                       Text(
+//                                         "Tracked",
+//                                         textAlign: TextAlign.center,
+//                                         style: GoogleFonts.manrope(
+//                                           fontWeight: FontWeight.w600,
+//                                           fontSize: 20,
+//                                           color: Colors.white,
+//                                         ),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                 ),
+//                               ],
+//                             );
+//                           }
+//                         },
+//                       ),
+//                     ),
+//                   ),
+//                   SizedBox(width: 8),
+//                   Expanded(
+//                     child: Container(
+//                       decoration: BoxDecoration(
+//                         color: const Color.fromARGB(255, 229, 116, 116),
+//                         borderRadius: BorderRadius.circular(5),
+//                       ),
+//                       padding: EdgeInsets.all(16),
+//                       child: StreamBuilder<QuerySnapshot>(
+//                         stream: FirebaseFirestore.instance
+//                             .collection('questions')
+//                             .orderBy('dateAdded')
+//                             .snapshots(),
+//                         builder: (context, snapshot) {
+//                           if (snapshot.connectionState ==
+//                               ConnectionState.waiting) {
+//                             return CircularProgressIndicator();
+//                           } else if (snapshot.hasError) {
+//                             return Text("Error: ${snapshot.error}");
+//                           } else {
+//                             int streak = 1;
+//                             final docs = snapshot.data!.docs;
+//                             for (int i = 1; i < docs.length; i++) {
+//                               final currentTimestamp = DateTime.parse(
+//                                   docs[i]['dateAdded']);
+//                               final prevTimestamp = DateTime.parse(
+//                                   docs[i - 1]['dateAdded']);
+//                               final difference = currentTimestamp
+//                                   .difference(prevTimestamp)
+//                                   .inDays;
+//                               if (difference == 1) {
+//                                 streak++;
+//                               } else {
+//                                 break;
+//                               }
+//                             }
+
+//                             // Check if the total questions count is a multiple of 10
+//                             // if (_totalQuestions % 10 == 0 && _totalQuestions > 0) {
+//                             //   // Award achievement here
+//                             //   // For now, just display a toast message
+//                             //   ScaffoldMessenger.of(context).showSnackBar(
+//                             //     SnackBar(
+//                             //       content: Text('Congratulations! You have reached a multiple of 10 questions.'),
+//                             //       duration: Duration(seconds: 2),
+//                             //     ),
+//                             //   );
+//                             // }
+
+//                             return Column(
+//                               mainAxisAlignment: MainAxisAlignment.center,
+//                               children: [
+//                                 Row(
+//                                   children: [
+//                                     Text(
+//                                       "$streak",
+//                                       textAlign: TextAlign.center,
+//                                       style: GoogleFonts.manrope(
+//                                         fontWeight: FontWeight.bold,
+//                                         fontSize: 70,
+//                                         color: Colors.white,
+//                                       ),
+//                                     ),
+//                                     SizedBox(
+//                                       height: 8,
+//                                       width: 4,
+//                                     ),
+//                                     Expanded(
+//                                       child: Column(
+//                                         crossAxisAlignment:
+//                                             CrossAxisAlignment.start,
+//                                         children: [
+//                                           Text(
+//                                             "Continuous",
+//                                             textAlign: TextAlign.center,
+//                                             style: GoogleFonts.manrope(
+//                                               fontWeight: FontWeight.w600,
+//                                               fontSize: 20,
+//                                               color: Colors.white,
+//                                             ),
+//                                           ),
+//                                           Text(
+//                                             "Progress",
+//                                             textAlign: TextAlign.center,
+//                                             style: GoogleFonts.manrope(
+//                                               fontWeight: FontWeight.w600,
+//                                               fontSize: 20,
+//                                               color: Colors.white,
+//                                             ),
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ],
+//                             );
+//                           }
+//                         },
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//             SizedBox(height: 5,),
+//             Padding(
+//               padding: const EdgeInsets.all(16.0),
+//               child: Container(
+//                 decoration: BoxDecoration(
+//                   border: Border.all(
+//                     width: 1,
+//                     color: Colors.green,
+//                   ),
+//                   borderRadius: BorderRadius.circular(10),
+//                 ),
+//                 child: Padding(
+//                   padding: const EdgeInsets.all(16.0),
+//                   child: Column(
+//                     children: [
+//                       Text(
+//                         'Test the time and space complexity of all questions tracked using flashcards! ',
+//                         textAlign: TextAlign.left,
+//                         style: GoogleFonts.manrope(
+//                           fontSize: 16,
+//                         ),
+//                       ),
+//                       SizedBox(height: 16),
+//                       Container(
+//                         width: double.infinity,
+//                         child: ElevatedButton(
+//                           style: ButtonStyle(
+//                             backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 253, 197, 216)),
+//                           ),
+//                           onPressed: () {
+//                             Navigator.push(
+//                               context,
+//                               MaterialPageRoute(builder: (context) => PracticeTestOptions()),
+//                             );
+//                           },
+//                           child: Row(
+//                             mainAxisAlignment: MainAxisAlignment.center, 
+//                             children: [
+//                               Icon(Icons.quiz),
+//                               SizedBox(width: 4,),
+//                               Text(
+//                                 "Practice",
+//                                 textAlign: TextAlign.center,
+//                                 style: GoogleFonts.manrope(
+//                                   fontSize: 20
+//                                 ),
+//                               ),
+//                               Spacer(),
+//                               Icon(Icons.arrow_forward_ios)
+//                             ],
+//                           ),
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ),
+//             Padding(
+//               padding: const EdgeInsets.all(8.0),
+//               child: Container(
+//                 decoration: BoxDecoration(
+//                   borderRadius: BorderRadius.circular(10),
+//                   color: Colors.grey[300]
+//                 ),
+//                 child: Padding(
+//                   padding: const EdgeInsets.all(8.0),
+//                   child: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       Row(
+//                         children: [
+//                           Text(
+//                             "Milestones Reached",
+//                             style: GoogleFonts.manrope(
+//                               fontSize: 20,
+//                               fontWeight: FontWeight.bold
+//                             ),
+//                           ),
+//                           Spacer(),
+//                           Icon(Icons.local_fire_department_outlined, color: Colors.red,),
+//                         ],
+//                       ),
+//                       Row(children: [
+//                         Text(
+//                                   "Milestones Achieved: $_milestones",
+//                                   textAlign: TextAlign.center,
+//                                   style: TextStyle(
+//                                     fontSize: 16,
+//                                     color: Colors.white,
+//                                   ),
+//                                 ),
+//                       ],)
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
